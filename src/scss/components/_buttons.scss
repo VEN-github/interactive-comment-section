@@ -1,0 +1,84 @@
+@use '../abstracts/' as *;
+@use '../base/typography' as *;
+@use '../components/media' as *;
+
+%btn {
+  font-family: $font-stack;
+  text-decoration: none;
+  background: transparent;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+}
+
+.vote-btn {
+  @extend %btn;
+  font-size: 1.125rem;
+  font-weight: weight(medium);
+  color: $light-grayish-blue;
+  transition: color 0.5s ease;
+
+  &:hover {
+    color: $moderate-blue;
+  }
+}
+
+.actions-btn {
+  @extend %btn;
+  display: inline-flex;
+  font-size: 1rem;
+  font-weight: weight(bold);
+  transition: opacity 0.5s ease;
+
+  &__icon {
+    margin-right: 0.5em;
+  }
+
+  &--reply {
+    color: $moderate-blue;
+  }
+
+  &--delete {
+    margin-right: 0.95em;
+    color: $soft-red;
+  }
+
+  &--edit {
+    @extend .actions-btn--reply;
+  }
+
+  &:hover {
+    opacity: 0.5;
+  }
+}
+
+.comment-form__btn {
+  grid-area: button;
+  justify-self: flex-end;
+  @extend %btn;
+  width: 75%;
+  height: fit-content;
+  padding: 0.75em 1em;
+  font-size: 1.125rem;
+  background-color: $moderate-blue;
+  color: $white;
+  border-radius: 7px;
+  transition: opacity 0.5s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+@include md {
+  .actions-btn--delete {
+    margin-right: 1.5em;
+  }
+}
+
+@include lg {
+  .comment-form__btn {
+    width: 65%;
+    padding: 0.75em 0.5em;
+  }
+}

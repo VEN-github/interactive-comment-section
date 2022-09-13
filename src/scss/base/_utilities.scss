@@ -1,0 +1,7 @@
+@use '../abstracts/' as *;
+
+.container {
+  max-width: $xl;
+  margin: 2.5rem auto;
+  padding: 0 0.75rem;
+}

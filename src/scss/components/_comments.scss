@@ -1,0 +1,186 @@
+@use '../abstracts/' as *;
+@use './media' as *;
+
+.comments {
+  display: grid;
+  grid-template-areas:
+    'header header'
+    'body body'
+    'voting actions';
+  row-gap: 16px;
+  margin-bottom: 1.3rem;
+  padding: 1rem;
+  background-color: $white;
+  border-radius: 10px;
+
+  #{&}__header {
+    grid-area: header;
+    @include flex(flex, flex-start, center);
+
+    &-image {
+      width: 35px;
+      height: 35px;
+      object-fit: cover;
+      margin-right: 0.75rem;
+    }
+  }
+
+  &__name {
+    margin-right: 0.5em;
+    font-size: 0.875rem;
+    font-weight: weight(bold);
+    color: $dark-blue;
+  }
+
+  &__badge {
+    padding: 0 0.55em;
+    font-size: 0.875rem;
+    font-weight: weight(medium);
+    background-color: $moderate-blue;
+    color: $white;
+    border-radius: 3px;
+  }
+
+  &__date {
+    margin-left: 0.5em;
+    font-size: 0.875rem;
+    font-weight: weight(regular);
+    color: $grayish-blue;
+  }
+
+  #{&}__body {
+    grid-area: body;
+    @extend .comments__date;
+
+    &-mention {
+      font-weight: weight(bold);
+      color: $moderate-blue;
+    }
+  }
+
+  #{&}__voting {
+    grid-area: voting;
+    @include flex(flex, flex-start, center);
+    max-width: fit-content;
+    height: fit-content;
+    padding: 0.5rem 0.75rem;
+    background-color: lighten($light-grayish-blue, 10%);
+    border-radius: 10px;
+  }
+
+  #{&}__actions {
+    grid-area: actions;
+    align-self: center;
+    justify-self: flex-end;
+  }
+}
+
+.replies {
+  position: relative;
+  padding-left: 0.3rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1.5px;
+    height: 100%;
+    background-color: $light-gray;
+  }
+}
+
+.comment-form {
+  display: grid;
+  grid-template-areas:
+    'input input input'
+    'image image button';
+  row-gap: 15px;
+  padding: 1rem;
+  background-color: $white;
+  border-radius: 10px;
+
+  #{&}__image {
+    grid-area: image;
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+  }
+}
+
+@include sm {
+  .comments {
+    padding: 1.3rem;
+
+    #{&}__header {
+      &-image {
+        width: 40px;
+        height: 40px;
+        margin-right: 1rem;
+      }
+    }
+
+    &__name {
+      margin-right: 0.75em;
+      font-size: 1rem;
+    }
+
+    &__badge {
+      font-size: 0.938rem;
+    }
+
+    &__date {
+      font-size: 1rem;
+    }
+
+    #{&}__voting {
+      padding: 0.75rem 1.2rem;
+    }
+  }
+
+  .replies {
+    padding-left: 0.5rem;
+  }
+}
+
+@include md {
+  .comments {
+    &__date {
+      margin-left: 0.75em;
+    }
+  }
+
+  .replies {
+    padding-left: 1.3rem;
+  }
+}
+
+@include lg {
+  .comments {
+    max-width: 800px;
+
+    grid-template-areas:
+      'voting header actions'
+      'voting body body';
+    column-gap: 20px;
+
+    #{&}__voting {
+      flex-direction: column;
+      padding: 0.5rem 0;
+    }
+  }
+
+  .replies {
+    max-width: 800px;
+    padding-left: 5rem;
+
+    &::before {
+      left: 35px;
+    }
+  }
+
+  .comment-form {
+    grid-template-areas: 'image input button';
+    grid-template-columns: 50px auto 160px;
+  }
+}

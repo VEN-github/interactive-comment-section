@@ -1,0 +1,21 @@
+@use '../abstracts/' as *;
+@use './typography' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: $font-stack;
+  background-color: $very-light-gray;
+  line-height: 1.6;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
