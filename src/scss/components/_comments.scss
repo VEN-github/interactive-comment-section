@@ -50,7 +50,10 @@
 
   #{&}__body {
     grid-area: body;
-    @extend .comments__date;
+    font-size: 0.875rem;
+    font-weight: weight(regular);
+    word-wrap: break-word;
+    color: $grayish-blue;
 
     &-mention {
       font-weight: weight(bold);
@@ -96,6 +99,7 @@
     'input input input'
     'image image button';
   row-gap: 15px;
+  margin-bottom: 1.3rem;
   padding: 1rem;
   background-color: $white;
   border-radius: 10px;
@@ -133,6 +137,10 @@
       font-size: 1rem;
     }
 
+    #{&}__body {
+      font-size: 1rem;
+    }
+
     #{&}__voting {
       padding: 0.75rem 1.2rem;
     }
@@ -162,6 +170,7 @@
     grid-template-areas:
       'voting header actions'
       'voting body body';
+    grid-template-columns: 45px auto auto;
     column-gap: 20px;
 
     #{&}__voting {
