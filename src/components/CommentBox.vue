@@ -18,6 +18,8 @@
           class="comment-edit__input"
           ref="editInput"
           v-model.trim="editComment"
+          @keydown.enter.exact.prevent
+          @keydown.enter.exact="onUpdateComment"
         />
         <button class="comment-edit__btn" @click="onUpdateComment">Update</button>
       </div>

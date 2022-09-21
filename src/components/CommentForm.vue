@@ -8,6 +8,8 @@
       class="comment-form__input"
       ref="commentInput"
       v-model.trim="content"
+      @keydown.enter.exact.prevent
+      @keydown.enter.exact="onAddComment"
     />
     <button class="comment-form__btn" @click="onAddComment">{{ btnName }}</button>
   </article>
