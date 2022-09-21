@@ -51,7 +51,6 @@
 <script>
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
 import CommentBox from './components/CommentBox.vue';
 import CommentForm from './components/CommentForm.vue';
 import ModalDelete from './components/ModalDelete.vue';
@@ -84,10 +83,7 @@ export default {
     },
     createdAt() {
       dayjs.extend(utc);
-      dayjs.extend(timezone);
-      //const tz = dayjs.tz.guess();
       return dayjs.utc().local().format();
-      //return dayjs().local().tz(tz);
     },
   },
   created() {
