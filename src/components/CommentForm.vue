@@ -7,7 +7,7 @@
       :placeholder="placeholder"
       class="comment-form__input"
       ref="commentInput"
-      v-model="content"
+      v-model.trim="content"
     />
     <button class="comment-form__btn" @click="onAddComment">{{ btnName }}</button>
   </article>

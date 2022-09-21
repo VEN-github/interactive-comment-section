@@ -8,7 +8,7 @@
         :currentUser="currentUser"
         @add-comment="addComment({ commentId: comment.id, content: $event })"
         @update-comment="updateComment({ commentId: comment.id }, $event)"
-        @show-modal="toggleModal({ commentId: comment.id })"
+        @show-modal="displayModal({ commentId: comment.id })"
         @increment-vote="incrementVote({ commentId: comment.id })"
         @decrement-vote="decrementVote({ commentId: comment.id })"
       >
@@ -20,7 +20,7 @@
             :currentUser="currentUser"
             @add-comment="addComment({ commentId: comment.id, content: $event })"
             @update-comment="updateComment({ commentId: comment.id, replyId: reply.id }, $event)"
-            @show-modal="toggleModal({ commentId: comment.id, replyId: reply.id })"
+            @show-modal="displayModal({ commentId: comment.id, replyId: reply.id })"
             @increment-vote="incrementVote({ commentId: comment.id, replyId: reply.id })"
             @decrement-vote="decrementVote({ commentId: comment.id, replyId: reply.id })"
           />
@@ -97,6 +97,7 @@ export default {
           content: content,
           createdAt: createdAt,
           score: 0,
+          voting: 0,
           user: {
             image: {
               png: imagePng,
@@ -114,8 +115,7 @@ export default {
         content: finalContent[finalContent.length - 1],
         createdAt: createdAt,
         score: 0,
-        upVote: false,
-        downVote: false,
+        voting: 0,
         replyingTo: replyingTo,
         user: {
           image: {
@@ -134,15 +134,17 @@ export default {
       }
       this.$store.dispatch('updateComment', { commentId, replyId, editComment });
     },
-    toggleModal({ commentId, replyId }) {
-      console.log(commentId, replyId);
+    toggleModal() {
+      this.showModal = !this.showModal;
+    },
+    displayModal({ commentId, replyId }) {
       this.deletedCommentId = commentId;
       this.deletedReplyId = replyId;
-      this.showModal = !this.showModal;
+      this.toggleModal();
     },
     deleteComment({ commentId, replyId }) {
       this.$store.dispatch('deleteComment', { commentId, replyId });
-      this.showModal = !this.showModal;
+      this.toggleModal();
     },
     incrementVote({ commentId, replyId = null }) {
       this.$store.dispatch('incrementVote', {

@@ -1,6 +1,28 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 
+const upVoting = ({ voting }) => {
+  switch (voting) {
+    case 1:
+      return -1;
+    case -1:
+      return 2;
+    default:
+      return 1;
+  }
+};
+
+const downVoting = ({ voting }) => {
+  switch (voting) {
+    case 1:
+      return -2;
+    case -1:
+      return 1;
+    default:
+      return -1;
+  }
+};
+
 const Store = createStore({
   state() {
     return {
@@ -104,111 +126,33 @@ const Store = createStore({
     },
     incrementVote: async ({ dispatch }, { commentId, replyId }) => {
       let comments = await JSON.parse(localStorage.getItem('comments'));
-      const commentsIndex = comments.findIndex(comment => comment.id === commentId);
+      const comment = comments.find(comment => comment.id === commentId);
 
       if (replyId) {
-        const replies = comments[commentsIndex].replies;
-        const repliesIndex = replies.findIndex(reply => reply.id === replyId);
-
-        if (!replies[repliesIndex].upVote && !replies[repliesIndex].downVote) {
-          replies[repliesIndex].score += 1;
-          replies[repliesIndex].upVote = true;
-          replies[repliesIndex].downVote = false;
-          dispatch('storeComments', comments);
-          return;
-        }
-        if (replies[repliesIndex].upVote && !replies[repliesIndex].downVote) {
-          replies[repliesIndex].score -= 1;
-          replies[repliesIndex].upVote = false;
-          replies[repliesIndex].downVote = false;
-          dispatch('storeComments', comments);
-          return;
-        }
-        if (!replies[repliesIndex].upVote && replies[repliesIndex].downVote) {
-          replies[repliesIndex].score += 2;
-          replies[repliesIndex].upVote = true;
-          replies[repliesIndex].downVote = false;
-          dispatch('storeComments', comments);
-          return;
-        }
-        return;
-      }
-
-      if (!comments[commentsIndex].upVote && !comments[commentsIndex].downVote) {
-        comments[commentsIndex].score += 1;
-        comments[commentsIndex].upVote = true;
-        comments[commentsIndex].downVote = false;
+        const replies = comment.replies.find(reply => reply.id === replyId);
+        replies.score += upVoting(replies);
+        replies.voting += upVoting(replies);
         dispatch('storeComments', comments);
         return;
       }
-      if (comments[commentsIndex].upVote && !comments[commentsIndex].downVote) {
-        comments[commentsIndex].score -= 1;
-        comments[commentsIndex].upVote = false;
-        comments[commentsIndex].downVote = false;
-        dispatch('storeComments', comments);
-        return;
-      }
-      if (!comments[commentsIndex].upVote && comments[commentsIndex].downVote) {
-        comments[commentsIndex].score += 2;
-        comments[commentsIndex].upVote = true;
-        comments[commentsIndex].downVote = false;
-        dispatch('storeComments', comments);
-        return;
-      }
+      comment.score += upVoting(comment);
+      comment.voting += upVoting(comment);
+      dispatch('storeComments', comments);
     },
     decrementVote: async ({ dispatch }, { commentId, replyId }) => {
       let comments = await JSON.parse(localStorage.getItem('comments'));
-      const commentsIndex = comments.findIndex(comment => comment.id === commentId);
+      const comment = comments.find(comment => comment.id === commentId);
 
       if (replyId) {
-        const replies = comments[commentsIndex].replies;
-        const repliesIndex = replies.findIndex(reply => reply.id === replyId);
-
-        if (!replies[repliesIndex].upVote && !replies[repliesIndex].downVote) {
-          replies[repliesIndex].score -= 1;
-          replies[repliesIndex].upVote = false;
-          replies[repliesIndex].downVote = true;
-          dispatch('storeComments', comments);
-          return;
-        }
-        if (!replies[repliesIndex].upVote && replies[repliesIndex].downVote) {
-          replies[repliesIndex].score += 1;
-          replies[repliesIndex].upVote = false;
-          replies[repliesIndex].downVote = false;
-          dispatch('storeComments', comments);
-          return;
-        }
-        if (replies[repliesIndex].upVote && !replies[repliesIndex].downVote) {
-          replies[repliesIndex].score -= 2;
-          replies[repliesIndex].upVote = false;
-          replies[repliesIndex].downVote = true;
-          dispatch('storeComments', comments);
-          return;
-        }
-        return;
-      }
-
-      if (!comments[commentsIndex].upVote && !comments[commentsIndex].downVote) {
-        comments[commentsIndex].score -= 1;
-        comments[commentsIndex].upVote = false;
-        comments[commentsIndex].downVote = true;
+        const replies = comment.replies.find(reply => reply.id === replyId);
+        replies.score += downVoting(replies);
+        replies.voting += downVoting(replies);
         dispatch('storeComments', comments);
         return;
       }
-      if (!comments[commentsIndex].upVote && comments[commentsIndex].downVote) {
-        comments[commentsIndex].score += 1;
-        comments[commentsIndex].upVote = false;
-        comments[commentsIndex].downVote = false;
-        dispatch('storeComments', comments);
-        return;
-      }
-      if (comments[commentsIndex].upVote && !comments[commentsIndex].downVote) {
-        comments[commentsIndex].score -= 2;
-        comments[commentsIndex].upVote = false;
-        comments[commentsIndex].downVote = true;
-        dispatch('storeComments', comments);
-        return;
-      }
+      comment.score += downVoting(comment);
+      comment.voting += downVoting(comment);
+      dispatch('storeComments', comments);
     },
     loadCurrentUser: async ({ state, commit }) => {
       let currentUser = await JSON.parse(localStorage.getItem('currentUser'));

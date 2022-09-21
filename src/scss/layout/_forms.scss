@@ -23,6 +23,10 @@
   word-wrap: break-word;
   border: 1.5px solid $light-gray;
   border-radius: 10px;
+
+  &:focus {
+    border-color: $moderate-blue;
+  }
 }
 
 .comment-edit__input {

@@ -3,7 +3,7 @@
     <div class="comments__header">
       <img :src="image" :alt="commentUsername" class="comments__header-image" />
       <h5 class="comments__name">{{ commentUsername }}</h5>
-      <p class="comments__badge" v-if="commentUsername === currentUser.username">you</p>
+      <p class="comments__badge" v-if="isYou">you</p>
       <p class="comments__date">{{ createdAt }}</p>
     </div>
     <div class="comments__body">
@@ -25,24 +25,23 @@
         {{ comment.content }}
       </template>
     </div>
-
     <div class="comments__voting">
       <button
         class="vote-btn"
-        :class="{ 'vote-btn--disabled': comment.upVote }"
+        :class="{ 'vote-btn--disabled': comment.voting === 1 }"
         @click="$emit('increment-vote')"
       >
         +</button
       ><input type="text" class="input__vote" :value="comment.score" /><button
         class="vote-btn"
-        :class="{ 'vote-btn--disabled': comment.downVote }"
+        :class="{ 'vote-btn--disabled': comment.voting === -1 }"
         @click="$emit('decrement-vote')"
       >
         -
       </button>
     </div>
     <div class="comments__actions">
-      <template v-if="commentUsername === currentUser.username">
+      <template v-if="isYou">
         <button
           class="actions-btn actions-btn--delete"
           :class="{ 'actions-btn--delete--disabled': showEdit }"
@@ -72,11 +71,11 @@
     </div>
   </article>
   <CommentForm
+    v-if="showReply"
     :currentUser="currentUser"
     :showReply="showReply"
     :replyingTo="replyingTo"
     btnName="Reply"
-    v-if="showReply"
     @add-comment="onAddComment"
   />
   <article class="replies">
@@ -111,6 +110,9 @@ export default {
     },
     commentUsername() {
       return this.comment.user?.username;
+    },
+    isYou() {
+      return this.commentUsername === this.currentUser.username;
     },
     createdAt() {
       dayjs.extend(relativeTime);
