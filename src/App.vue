@@ -85,8 +85,9 @@ export default {
     createdAt() {
       dayjs.extend(utc);
       dayjs.extend(timezone);
-      const tz = dayjs.tz.guess();
-      return dayjs().local().tz(tz);
+      //const tz = dayjs.tz.guess();
+      return dayjs.utc().local().format();
+      //return dayjs().local().tz(tz);
     },
   },
   created() {
