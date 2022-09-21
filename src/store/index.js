@@ -1,25 +1,14 @@
 import { createStore } from 'vuex';
 import axios from 'axios';
 
-const upVoting = ({ voting }) => {
+const onVoting = ({ voting }, upvoted = false) => {
   switch (voting) {
     case 1:
-      return -1;
+      return upvoted ? -1 : -2;
     case -1:
-      return 2;
+      return upvoted ? 2 : 1;
     default:
-      return 1;
-  }
-};
-
-const downVoting = ({ voting }) => {
-  switch (voting) {
-    case 1:
-      return -2;
-    case -1:
-      return 1;
-    default:
-      return -1;
+      return upvoted ? 1 : -1;
   }
 };
 
@@ -124,34 +113,19 @@ const Store = createStore({
       comments.splice(commentsIndex, 1);
       dispatch('storeComments', comments);
     },
-    incrementVote: async ({ dispatch }, { commentId, replyId }) => {
+    setVote: async ({ dispatch }, { commentId, replyId, upvoted = false }) => {
       let comments = await JSON.parse(localStorage.getItem('comments'));
       const comment = comments.find(comment => comment.id === commentId);
 
       if (replyId) {
         const replies = comment.replies.find(reply => reply.id === replyId);
-        replies.score += upVoting(replies);
-        replies.voting += upVoting(replies);
+        replies.score += onVoting(replies, upvoted);
+        replies.voting += onVoting(replies, upvoted);
         dispatch('storeComments', comments);
         return;
       }
-      comment.score += upVoting(comment);
-      comment.voting += upVoting(comment);
-      dispatch('storeComments', comments);
-    },
-    decrementVote: async ({ dispatch }, { commentId, replyId }) => {
-      let comments = await JSON.parse(localStorage.getItem('comments'));
-      const comment = comments.find(comment => comment.id === commentId);
-
-      if (replyId) {
-        const replies = comment.replies.find(reply => reply.id === replyId);
-        replies.score += downVoting(replies);
-        replies.voting += downVoting(replies);
-        dispatch('storeComments', comments);
-        return;
-      }
-      comment.score += downVoting(comment);
-      comment.voting += downVoting(comment);
+      comment.score += onVoting(comment, upvoted);
+      comment.voting += onVoting(comment, upvoted);
       dispatch('storeComments', comments);
     },
     loadCurrentUser: async ({ state, commit }) => {

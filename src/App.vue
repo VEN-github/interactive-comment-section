@@ -147,13 +147,14 @@ export default {
       this.toggleModal();
     },
     incrementVote({ commentId, replyId = null }) {
-      this.$store.dispatch('incrementVote', {
+      this.$store.dispatch('setVote', {
         commentId,
         replyId,
+        upvoted: true,
       });
     },
     decrementVote({ commentId, replyId = null }) {
-      this.$store.dispatch('decrementVote', {
+      this.$store.dispatch('setVote', {
         commentId,
         replyId,
       });
