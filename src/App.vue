@@ -50,6 +50,8 @@
 
 <script>
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import CommentBox from './components/CommentBox.vue';
 import CommentForm from './components/CommentForm.vue';
 import ModalDelete from './components/ModalDelete.vue';
@@ -62,7 +64,6 @@ export default {
   },
   data() {
     return {
-      createdAt: dayjs().format(),
       showModal: false,
       deletedCommentId: null,
       deletedReplyId: null,
@@ -80,6 +81,12 @@ export default {
     },
     imagePng() {
       return this.currentUser?.image?.png;
+    },
+    createdAt() {
+      dayjs.extend(utc);
+      dayjs.extend(timezone);
+      const tz = dayjs.tz.guess();
+      return dayjs().local().tz(tz);
     },
   },
   created() {
