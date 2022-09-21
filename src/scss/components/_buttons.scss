@@ -18,8 +18,12 @@
   color: $light-grayish-blue;
   transition: color 0.5s ease;
 
-  &:hover {
+  &:hover:not(.vote-btn--disabled) {
     color: $moderate-blue;
+  }
+
+  &--disabled {
+    color: $pale-red;
   }
 }
 
@@ -41,6 +45,11 @@
   &--delete {
     margin-right: 0.95em;
     color: $soft-red;
+
+    &--disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 
   &--edit {
@@ -60,6 +69,7 @@
   height: fit-content;
   padding: 0.75em 1em;
   font-size: 1.125rem;
+  text-transform: uppercase;
   background-color: $moderate-blue;
   color: $white;
   border-radius: 7px;
@@ -68,6 +78,44 @@
   &:hover {
     opacity: 0.8;
   }
+}
+
+.comment-edit__btn {
+  @extend %btn;
+  display: block;
+  margin-left: auto;
+  padding: 0.75em 1em;
+  font-size: 1rem;
+  text-transform: uppercase;
+  background-color: $moderate-blue;
+  color: $white;
+  border-radius: 7px;
+  transition: opacity 0.5s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.modal__cancel-btn {
+  @extend %btn;
+  margin-right: 0.75em;
+  padding: 0.75em 1em;
+  font-size: 0.938rem;
+  text-transform: uppercase;
+  background-color: $grayish-blue;
+  color: $white;
+  border-radius: 7px;
+  transition: opacity 0.5s ease;
+
+  &:hover {
+    opacity: 0.7;
+  }
+}
+
+.modal__confirm-btn {
+  @extend .modal__cancel-btn;
+  background-color: $soft-red;
 }
 
 @include md {
@@ -80,5 +128,9 @@
   .comment-form__btn {
     width: 65%;
     padding: 0.75em 0.5em;
+  }
+
+  .comment-edit__btn {
+    font-size: 1.125rem;
   }
 }
