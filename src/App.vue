@@ -1,31 +1,37 @@
 <template>
   <main class="main">
     <div class="container">
-      <CommentBox
-        v-for="comment in comments"
-        :key="comment.id"
-        :comment="comment"
-        :currentUser="currentUser"
-        @add-comment="addComment({ commentId: comment.id, content: $event })"
-        @update-comment="updateComment({ commentId: comment.id }, $event)"
-        @show-modal="displayModal({ commentId: comment.id })"
-        @increment-vote="incrementVote({ commentId: comment.id })"
-        @decrement-vote="decrementVote({ commentId: comment.id })"
-      >
-        <template #replies="{ replies }">
+      <TransitionGroup name="list" tag="div">
+        <div v-for="comment in comments" :key="comment.id">
           <CommentBox
-            v-for="reply in replies"
-            :key="reply.id"
-            :comment="reply"
+            :comment="comment"
             :currentUser="currentUser"
             @add-comment="addComment({ commentId: comment.id, content: $event })"
-            @update-comment="updateComment({ commentId: comment.id, replyId: reply.id }, $event)"
-            @show-modal="displayModal({ commentId: comment.id, replyId: reply.id })"
-            @increment-vote="incrementVote({ commentId: comment.id, replyId: reply.id })"
-            @decrement-vote="decrementVote({ commentId: comment.id, replyId: reply.id })"
-          />
-        </template>
-      </CommentBox>
+            @update-comment="updateComment({ commentId: comment.id }, $event)"
+            @show-modal="displayModal({ commentId: comment.id })"
+            @increment-vote="incrementVote({ commentId: comment.id })"
+            @decrement-vote="decrementVote({ commentId: comment.id })"
+          >
+            <template #replies="{ replies }">
+              <TransitionGroup name="list" tag="div">
+                <div v-for="reply in replies" :key="reply.id">
+                  <CommentBox
+                    :comment="reply"
+                    :currentUser="currentUser"
+                    @add-comment="addComment({ commentId: comment.id, content: $event })"
+                    @update-comment="
+                      updateComment({ commentId: comment.id, replyId: reply.id }, $event)
+                    "
+                    @show-modal="displayModal({ commentId: comment.id, replyId: reply.id })"
+                    @increment-vote="incrementVote({ commentId: comment.id, replyId: reply.id })"
+                    @decrement-vote="decrementVote({ commentId: comment.id, replyId: reply.id })"
+                  />
+                </div>
+              </TransitionGroup>
+            </template>
+          </CommentBox>
+        </div>
+      </TransitionGroup>
       <CommentForm
         :currentUser="currentUser"
         btnName="Send"
