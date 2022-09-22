@@ -44,6 +44,11 @@
           @delete-comment="deleteComment({ commentId: deletedCommentId, replyId: deletedReplyId })"
         />
       </teleport>
+      <div class="attribution">
+        Challenge by
+        <a href="https://www.frontendmentor.io?ref=challenge" target="_blank">Frontend Mentor</a>.
+        Coded by <a href="https://www.frontendmentor.io/profile/VEN-github">Raven Barrogo</a>.
+      </div>
     </div>
   </main>
 </template>

@@ -19,3 +19,12 @@ body {
   align-items: center;
   min-height: 100vh;
 }
+
+.attribution {
+  font-size: 0.688rem;
+  text-align: center;
+
+  & a {
+    color: hsl(228, 45%, 44%);
+  }
+}
